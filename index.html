@@ -20,16 +20,16 @@ Rate titanic:
 <script>
     let data = {
         languages: {
-            french: null,
-            spanish: null,
-            english: null,
-            vietnamese: null,
+            french: null, //binary
+            spanish: null, //binary
+            english: null, //binary
+            vietnamese: null, //binary
         },
         music: {
-            rap: null,
-            heavy: null,
-            classical: null,
-            rave: null,
+            rap: null, //binary
+            heavy: null, //binary
+            classical: null, //binary
+            rave: null, //binary
         },
         movies: {
             titanic: null, //number
@@ -45,13 +45,15 @@ Rate titanic:
     }
 
     function numericValueChange() {
+        
 
+        predict();
     }
 
     function predict() {
-        //send data to server
-
-        //show results on right panel
+        //TODO: post data object to server
+            //TODO: show results on right panel
+                //results: [{ name: 'London', ranking: '1'}] //ranking is from 0 to 1
     }
 </script>
 </body>
