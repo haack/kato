@@ -1,5 +1,5 @@
 const bayes = require('node-bayes');
-const dataset = require('./dataset.js');
+const dataset = require('./dataset_v2.js');
 
 let model;
 
@@ -7,7 +7,7 @@ let model;
 function buildModel() {
     model = new bayes.NaiveBayes({
         columns: dataset.labels,
-        data: dataset.data,
+        data: dataset.training,
         verbose: true
     });
 
