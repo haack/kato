@@ -4,10 +4,10 @@
 <body>
 
 What's your jam?
-<input type="checkbox" name="rap" onclick="binaryValueChange('music', 'rap', this)">Rap
-<input type="checkbox" name="heavy" onclick="binaryValueChange('music', 'heavy', this)">Something heavier
-<input type="checkbox" name="classical" onclick="binaryValueChange('music', 'classical', this)">Classical
-<input type="checkbox" name="rave" onclick="binaryValueChange('music', 'rave', this)">Rave
+<input type="checkbox" name="rap" onclick="binaryValueChange('musicGenres', 'rap', this)">Rap
+<input type="checkbox" name="heavy" onclick="binaryValueChange('musicGenres', 'heavy', this)">Something heavier
+<input type="checkbox" name="classical" onclick="binaryValueChange('musicGenres', 'classical', this)">Classical
+<input type="checkbox" name="rave" onclick="binaryValueChange('musicGenres', 'rave', this)">Rave
 <hr />
 What languages do you speak?
 <input type="checkbox" name="rap" onclick="binaryValueChange('languages', 'french', this)">French
@@ -19,33 +19,49 @@ Rate titanic:
 <input type="number" min=0 max=5 onclick="numericValueChange('movies', 'titanic', this)"/>
 <script>
     let data = {
-        languages: {
-            french: null, //binary
-            spanish: null, //binary
-            english: null, //binary
-            vietnamese: null, //binary
+        languages: { //checkboxes
+            french: null, //boolean
+            spanish: null, //boolean
+            english: null, //boolean
+            vietnamese: null, //boolean
+            russian: null, //boolean
         },
-        music: {
-            rap: null, //binary
-            heavy: null, //binary
-            classical: null, //binary
-            rave: null, //binary
+        musicGenres: { //checkboxes
+            rap: null, //boolean
+            heavy: null, //boolean
+            classical: null, //boolean
+            rave: null, //boolean
         },
         movies: {
-            titanic: null, //number
-        }
+            titanic: null, //5 star rating
+            diehard: null, //either yay, me, nah
+        },
+        drink: { //radio buttons
+            favourite: null, //either tequila, coffee, coca-cola, none
+        },
+        food: {
+            sushi: null, //either yay, meh, nah
+            pizza: null, //5 star rating
+            hotdog: null, //boolean
+        },
+        other: {
+            baller: null, //either everyday, notreally, noidea
+            musicPeakedIn80s: null //boolean
+        },
     };
 
     function binaryValueChange(category, key, input) {
         let checked = input.checked;
-        data[category][key] = (checked === true) ? true : null;
+        data[category][key] = checked || null;
         console.log(data);
 
         predict();
     }
 
-    function numericValueChange() {
-        
+    function numericValueChange(category, key, input) {
+        let value = input.value;
+        data[category][key] = parseInt(value) || null;
+        console.log(data);
 
         predict();
     }
