@@ -24,7 +24,7 @@ function predict(data) {
     let features = dataset.getFeaturesFromData(data);
     let rankings = [];
 
-    return features;
+    return model.predict(features);
 }
 
 buildModel();
