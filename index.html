@@ -67,20 +67,26 @@ Rate titanic:
     }
 
     function predict() {
-        //TODO: post data object to server
-            //TODO: show results on right panel
-                //results: [{ name: 'London', ranking: '1'}] //ranking is from 0 to 1
+        if (!data) {
+            console.log("Shit, something isn't right");
+        } else {
+            //TODO: post data object to server
+                //TODO: show results on right panel
+                    //results: [{ name: 'London', ranking: '1'}] //ranking is from 0 to 1
+        }
+
+        return randomRecommendations();
     }
 
     function randomRecommendations() {
-        let exampleRecommendations = [
-            'London', 'Helsinki', 'Hanoi', 'Tokyo'
+        let locations = [
+            'London', 'Helsinki', 'Hanoi', 'Tokyo', 'Tel Aviv'
         ].sort(() => .5 - Math.random());
 
         let ranking = 1;
 
-        return exampleRecommendations.map(name => {
-            ranking -= (Math.random() / 4);
+        return locations.map(name => {
+            ranking -= (Math.random() / locations.length);
             return {
                 name,
                 ranking,
