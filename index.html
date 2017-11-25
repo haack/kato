@@ -1,78 +1,181 @@
 <html>
 <head>
+  <title>SHOW ME WHAT YOU GOT | Rick and Morty survey</title>
+    <!-- font-family: 'Bungee', cursive;
+         font-family: 'Source Code Pro', monospace; -->
+    <link href="https://fonts.googleapis.com/css?family=Bungee|Source+Code+Pro" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./styles/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/scripts.js"></script>
 </head>
+
 <body>
 
-What's your jam?
-<input type="checkbox" name="rap" onclick="binaryValueChange('music', 'rap', this)">Rap
-<input type="checkbox" name="heavy" onclick="binaryValueChange('music', 'heavy', this)">Something heavier
-<input type="checkbox" name="classical" onclick="binaryValueChange('music', 'classical', this)">Classical
-<input type="checkbox" name="rave" onclick="binaryValueChange('music', 'rave', this)">Rave
-<hr />
-What languages do you speak?
-<input type="checkbox" name="rap" onclick="binaryValueChange('languages', 'french', this)">French
-<input type="checkbox" name="heavy" onclick="binaryValueChange('languages', 'spanish', this)">Spanish
-<input type="checkbox" name="classical" onclick="binaryValueChange('languages', 'vietnamese', this)">Vietnamese
-<input type="checkbox" name="rave" onclick="binaryValueChange('languages', 'english', this)">English
-<hr />
-Rate titanic:
-<input type="number" min=0 max=5 onclick="numericValueChange('movies', 'titanic', this)"/>
-<script>
-    let data = {
-        languages: {
-            french: null, //binary
-            spanish: null, //binary
-            english: null, //binary
-            vietnamese: null, //binary
-        },
-        music: {
-            rap: null, //binary
-            heavy: null, //binary
-            classical: null, //binary
-            rave: null, //binary
-        },
-        movies: {
-            titanic: null, //number
-        }
-    };
+  <div class="container">
+    <center><div class="center>"><img src="https://farm5.staticflickr.com/4241/35480732200_94e9b675ce.jpg">
+    <h1 id="title">A good survey</h1></div></center>
+  </div>
 
-    function binaryValueChange(category, key, input) {
-        let checked = input.checked;
-        data[category][key] = (checked === true) ? true : null;
-        console.log(data);
+  <p id="description">Welcome, fellow Finnair customer!!</p>
 
-        predict();
-    }
+  <form id="survey-form" action="https://formspree.io/your@email.com"
+      method="POST">
+    <div class="wrapper">
+      <label id="name-label" class="question" for="name" name="name">* Identify yourself</label><br>
+      <input id="name" class="answer" type="text" placeholder="They call me..." required><br>
+    </div>
 
-    function numericValueChange() {
-        
+    <br>
 
-        predict();
-    }
+    <div class="wrapper">
+      <label id="email-label" class="question" for="email">* Email</label><br>
+      <input id="email" class="answer" type="email" placeholder="your@email.here" required><br>
+    </div>
 
-    function predict() {
-        //TODO: post data object to server
-            //TODO: show results on right panel
-                //results: [{ name: 'London', ranking: '1'}] //ranking is from 0 to 1
-    }
+    <br>
 
-    function randomRecommendations() {
-        let exampleRecommendations = [
-            'London', 'Helsinki', 'Hanoi', 'Tokyo'
-        ].sort(() => .5 - Math.random());
+    <div class="wrapper">
+      <label id="number-label" class="question" for="number">How old are you?</label><br>
+      <input id="number" name="age" class="answer" type="number" min="0" max="117" placeholder="60"><br>
+    </div>
 
-        let ranking = 1;
+    <br>
 
-        return exampleRecommendations.map(name => {
-            ranking -= (Math.random() / 4);
-            return {
-                name,
-                ranking,
-            };
-        })
-    }
+    <div class="wrapper">
+      <span class="question">What is your purpose?</span><br>
+      <select id="dropdown" class="answer">
+        <option value="child">Child</option>
+        <option value="studet">Student</option>
+        <option value="military">Military</option>
+        <option value="unemployed">Unemployed</option>
+        <option value="self_employed">Self employed</option>
+        <option value="some_professional">Some professional</option>
+        <option value="butter">To pass butter</option>
+        <option value="retired">Retired</option>
+      </select><br>
+    </div>
 
-    console.log(randomRecommendations());
-</script>
+    <div class="wrapper">
+      <span class="question">What is your jam?</span><br>
+      <span class="answer">
+        <input type="checkbox" name="rap" onclick="binaryValueChange('music', 'rap', this)">Rap<br>
+        <input type="checkbox" name="heavy" onclick="binaryValueChange('music', 'heavy', this)">Something heavier<br>
+        <input type="checkbox" name="classical" onclick="binaryValueChange('music', 'classical', this)">Classical<br>
+        <input type="checkbox" name="rave" onclick="binaryValueChange('music', 'rave', this)">Rave<br>
+      </span>
+    </div>
+
+    <div class="wrapper">
+      <span class="question">What languages do you speak?</span><br>
+      <span class="answer">
+        <input type="checkbox" name="rap" onclick="binaryValueChange('languages', 'french', this)">French
+        <input type="checkbox" name="heavy" onclick="binaryValueChange('languages', 'spanish', this)">Spanish
+        <input type="checkbox" name="classical" onclick="binaryValueChange('languages', 'vietnamese', this)">Vietnamese
+        <input type="checkbox" name="rave" onclick="binaryValueChange('languages', 'english', this)">English
+      </span>
+    </div>
+
+    <br>
+
+    <div class="wrapper">
+      <span class="question">Rate Titanic?</span><br>
+      <input type="number" min=0 max=5 onclick="numericValueChange('movies', 'titanic', this)"/>
+    </div>
+
+    <br>
+
+    <div class="wrapper">
+      <span class="question">How would you describe Finnair to a friend?</span><br>
+      <textarea class="answer"></textarea><br>
+    </div>
+
+    <br>
+
+    <center><button id="submit" type="submit" form="survey-form">Submit</button></center>
+  </form>
+
+  <div class="container right">
+    <div id="result"></div>
+  </div>
+
+  <script>
+
+
+      let data = {
+          languages: {
+              french: null, //binary
+              spanish: null, //binary
+              english: null, //binary
+              vietnamese: null, //binary
+          },
+          music: {
+              rap: null, //binary
+              heavy: null, //binary
+              classical: null, //binary
+              rave: null, //binary
+          },
+          movies: {
+              titanic: null, //number
+          }
+      };
+
+      function binaryValueChange(category, key, input) {
+          let checked = input.checked;
+          data[category][key] = (checked === true) ? true : null;
+          console.log(data);
+
+          predict();
+      }
+
+      function numericValueChange() {
+
+
+          predict();
+      }
+
+      function predict() {
+          //TODO: post data object to server
+              //TODO: show results on right panel
+                  //results: [{ name: 'London', ranking: '1'}] //ranking is from 0 to 1
+      }
+
+      function randomRecommendations() {
+          let exampleRecommendations = [
+              'London', 'Helsinki', 'Hanoi', 'Tokyo'
+          ].sort(() => .5 - Math.random());
+
+          let ranking = 1;
+
+          return exampleRecommendations.map(name => {
+              ranking -= (Math.random() / 4);
+              return {
+                  name,
+                  ranking,
+              };
+          })
+      }
+
+      var result_html =""
+      var recommendation_arr = randomRecommendations().map((result) => {
+        return `
+        <div class="result">
+          <div class="result_name">${JSON.stringify(result.name)}</div>
+          <div class="result_ranking">${JSON.stringify(result.ranking)}</div>
+        </div>
+        `
+      });
+      for(let i=0; i<recommendation_arr.length; i++){
+        result_html += recommendation_arr[i];
+      }
+
+      if(result_html){
+        $("#result").append("<div class='intro'>The recommendations for you are</div>")
+        $("#result").append(result_html);
+      }
+
+
+  </script>
+
 </body>
+
 </html>
