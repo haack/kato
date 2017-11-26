@@ -1,22 +1,64 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="./node_modules/superagent/superagent.js"></script>
+    <script src="./vendor/tags.js"></script>
+    <link rel="stylesheet" type="text/css" href="./vendor/tags.css">
+    <link rel="stylesheet" type="text/css" href="./styles/styles.css">
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-5">
+            <br /><br />
+            <div class="title"><a href="https://en.wikipedia.org/wiki/Kato_(The_Green_Hornet)">kato</a></div>
+            <div class="sub">Anonymous recommmendations</div>
 
-What's your jam?
-<input type="checkbox" name="rap" onclick="binaryValueChange('musicGenres', 'rap', this)">Rap
-<input type="checkbox" name="heavy" onclick="binaryValueChange('musicGenres', 'heavy', this)">Something heavier
-<input type="checkbox" name="classical" onclick="binaryValueChange('musicGenres', 'classical', this)">Classical
-<input type="checkbox" name="rave" onclick="binaryValueChange('musicGenres', 'rave', this)">Rave
-<hr />
-What languages do you speak?
-<input type="checkbox" name="rap" onclick="binaryValueChange('languages', 'french', this)">French
-<input type="checkbox" name="heavy" onclick="binaryValueChange('languages', 'spanish', this)">Spanish
-<input type="checkbox" name="classical" onclick="binaryValueChange('languages', 'vietnamese', this)">Vietnamese
-<input type="checkbox" name="rave" onclick="binaryValueChange('languages', 'english', this)">English
-<hr />
-Rate titanic:
-<input type="number" min=0 max=5 onclick="numericValueChange('movies', 'titanic', this)"/>
+            <br /><br /><br /><br />
+            <h2>What's your jam?</h2>
+
+            <form action="">
+                <input type="checkbox" name="rap" onclick="binaryValueChange('musicGenres', 'rap', this)"> Rap<br>
+                <input type="checkbox" name="heavy" onclick="binaryValueChange('musicGenres', 'heavy', this)"> Something heavier<br>
+                <input type="checkbox" name="classical" onclick="binaryValueChange('musicGenres', 'classical', this)"> Classical<br>
+                <input type="checkbox" name="rave" onclick="binaryValueChange('musicGenres', 'rave', this)"> Rave
+            </form>
+            <br /><hr />
+            <h2>What languages do you speak?</h2>
+            <form action="">
+                <input type="checkbox" name="rap" onclick="binaryValueChange('languages', 'french', this)"> French<br>
+                <input type="checkbox" name="heavy" onclick="binaryValueChange('languages', 'spanish', this)"> Spanish<br>
+                <input type="checkbox" name="classical" onclick="binaryValueChange('languages', 'vietnamese', this)"> Vietnamese<br>
+                <input type="checkbox" name="rave" onclick="binaryValueChange('languages', 'english', this)"> English
+            </form>
+            <br /><hr />
+
+            <h2>Drink</h2>
+            <form action="">
+                <input type="radio" name="drink" value="tequila" onchange="radioValueChange('drink', 'favourite', this)"> Tequila<br>
+                <input type="radio" name="drink" value="coffee" onchange="radioValueChange('drink', 'favourite', this)"> Coffee<br>
+                <input type="radio" name="drink" value="coca-cola" onchange="radioValueChange('drink', 'favourite', this)"> Coca-cola<br>
+                <input type="radio" name="drink" value="none" onchange="radioValueChange('drink', 'favourite', this)"> None
+            </form>
+            <br /><hr />
+
+            <h2>Which cities do you love?</h2>
+            <input class="cityinput" id="goodcities" value="" data-role="tagsinput">
+            <br /><hr />
+
+            <h2>Which cities do you NOT love?</h2>
+            <input class="cityinput" id="badcities" type="text" value="" data-role="tagsinput" onchange="console.log(this.value)">
+
+        </div>
+        <div class="col-sm-5 col-sm-offset-2 recs">
+            <ol id="recs"></ol>
+        </div>
+    </div>
+</div>
 <script>
     let data = {
         languages: { //checkboxes
@@ -49,13 +91,29 @@ Rate titanic:
             musicPeakedIn80s: null, //boolean
             catdog: null, //cat/dog
         },
-        locations: [],
+        goodLocations: [],
+        badLocations: [],
     };
+
+    var citynames = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: './top_places.json'
+    });
+    citynames.initialize();
+
+    $('.cityinput').tagsinput({
+        typeaheadjs: {
+            displayKey: 'name',
+            valueKey: 'name',
+            source: citynames.ttAdapter()
+        },
+        freeInput: false
+    });
 
     function binaryValueChange(category, key, input) {
         let checked = input.checked;
         data[category][key] = checked || null;
-        console.log(data);
 
         predict();
     }
@@ -63,21 +121,53 @@ Rate titanic:
     function numericValueChange(category, key, input) {
         let value = input.value;
         data[category][key] = parseInt(value) || null;
-        console.log(data);
 
         predict();
+    }
+
+    function radioValueChange(category, key, input) {
+        let value = input.value;
+
+        if (value) {
+            data[category][key] = value || null;
+
+            console.log(value);
+
+            predict();
+        }
+    }
+
+    function insert() {
+        data.goodLocations = $('#goodcities').tagsinput('items')
+        data.badLocations = $('#badcities').tagsinput('items')
+
+        superagent.post('http://localhost:3000/insert')
+            .send(data)
+            .set('Accept', 'application/json')
+            .end(() => {});
     }
 
     function predict() {
         if (!data) {
             console.log("Shit, something isn't right");
         } else {
-            //TODO: post data object to server
-                //TODO: show results on right panel
-                    //results: [{ name: 'London', ranking: '1'}] //ranking is from 0 to 1
-        }
+            superagent
+                .post('http://localhost:3000/predict')
+                .send(data)
+                .set('Accept', 'application/json')
+                .end((err, res) => {
+                    console.log(err);
+                    console.log(res.text);
 
-        return randomRecommendations();
+                    //TODO: use real results and show on right panel
+
+                    $('#recs').html(
+                            JSON.parse(res.text).map((pair) =>
+                                `<li /><div class="item" style="width: ${(pair.rating*300) + 200}px">${pair.name}</div> ${(pair.rating*100).toString().split('.')[0]}%`
+                            )
+                    );
+                });
+        }
     }
 
     function randomRecommendations() {
@@ -95,8 +185,6 @@ Rate titanic:
             };
         })
     }
-
-    console.log(randomRecommendations());
 </script>
 </body>
 </html>

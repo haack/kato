@@ -20,17 +20,23 @@ function loadAndBuild() {
     });
 }
 
-app.post('/dummy', (req, res) => {
+app.post('/predict', (req, res) => {
+    console.log(req.data);
     let datum = req.body;
 
     let locationsToClassify = locations.filter(location => !datum.goodLocations.includes(location) && !datum.badLocations.includes(location))
 
     let recs = locationsToClassify.map(location => {
-        return {
-            name: location,
-            prediction: classifiers[location].predict(datum),
+        let prediction = classifiers[location].predict(datum);
+
+        if (prediction) {
+            return {
+                name: location,
+                rating: prediction[prediction.answer],
+            }
         }
-    });
+    }).filter(pair => !!pair)
+    .sort((a,b) => b.rating - a.rating);
 
     res.send(recs);
 });
@@ -42,19 +48,19 @@ app.post('/insert', (req, res) => {
 
     res.send("thanks");
 });
-
-app.post('/predict', (req, res) => {
-    res.send([
-        {
-            name: "London",
-            rating: 0.9
-        },
-        {
-            name: "Helsinki",
-            rating: 0.6
-        },
-    ]);
-});
+//
+// app.post('/predict', (req, res) => {
+//     res.send([
+//         {
+//             name: "London",
+//             rating: 0.9
+//         },
+//         {
+//             name: "Helsinki",
+//             rating: 0.6
+//         },
+//     ]);
+// });
 
 function main() {
     request('http://localhost:1337/cities/top/60', (err, res, body) => {
@@ -68,7 +74,7 @@ function main() {
 
             loadAndBuild();
 
-            app.listen(8000, () => console.log('Listening on port 8000!'));
+            app.listen(3000, () => console.log('Listening on port 3000!'));
         } else {
             console.log(`shit: ${err}`);
         }

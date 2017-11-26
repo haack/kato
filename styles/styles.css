@@ -1,0 +1,43 @@
+body {
+    background-color: #343d46;
+    color: #c0c5ce;
+}
+
+a {
+    color: white;
+    text-decoration: overline;
+}
+
+a:hover {
+    color: white;
+}
+
+.title {
+    font-size: 50px;
+}
+
+h2 {
+    color: white;
+}
+
+.sub {
+    font-size: 20px;
+    padding-bottom: 20px;
+}
+
+#recs {
+    list-style: none;
+    font-size: 30px;
+    padding-top: 30px;
+}
+
+.item {
+    color: #343d46;
+    background-color: white;
+    padding-left: 20px;
+    display: inline-block;
+}
+
+#recs li {
+    margin-bottom: 10px;
+}

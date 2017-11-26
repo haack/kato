@@ -57,7 +57,13 @@ class Classifier {
         console.log(this.model);
         console.log(this.className);
 
-        return this.model.predict(features);
+        try {
+            let prediction = this.model.predict(features);
+
+            return prediction;
+        } catch (e) {
+            console.log(`${this.className} failed to classify. Was it trained?`);
+        }
     }
 }
 
