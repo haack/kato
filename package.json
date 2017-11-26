@@ -1,0 +1,33 @@
+{
+  "name": "kato",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cities.json": "^1.1.0",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "flat": "^4.0.0",
+    "mongodb": "^2.2.33",
+    "node-bayes": "^1.1.0",
+    "request": "^2.83.0",
+    "superagent": "^3.8.1",
+    "sync-request": "^4.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haack/kato.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haack/kato/issues"
+  },
+  "homepage": "https://github.com/haack/kato#readme"
+}
