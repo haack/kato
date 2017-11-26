@@ -11,23 +11,11 @@ const labels = [
     'languages.english',
     'languages.vietnamese',
     'languages.russian',
-    'films.titanic',
-    'films.diehard',
 ];
+
+const types = ["boolean", "boolean", "boolean", "boolean", "boolean", "boolean", "boolean", "boolean", "boolean", "string"];
 
 const classifier = 'like';
-
-const training = [
-    [true, true, false, false, false, false, true, false, false, 0, 1, "yes"],
-    [false, true, false, false, false, false, true, false, false, 2, 2, "no"],
-    [true, true, false, false, false, false, true, false, false, 2, 3, "yes"],
-    [true, true, false, false, false, false, true, false, false, 6, 4, "yes"],
-    [true, true, false, false, false, false, true, true, false, 3, 5, "yes"],
-    [false, true, false, false, false, false, true, true, false, 2, 6, "no"],
-    [true, true, true, false, false, false, true, false, false, 2, 7, "yes"],
-    [true, true, false, false, false, false, true, false, false, 2, 8, "no"],
-    [true, true, true, false, true, false, true, false, false, 1, 9, "no"],
-];
 
 function getFeaturesFromData(data) {
     data = flatten(data);
@@ -36,5 +24,5 @@ function getFeaturesFromData(data) {
 }
 
 module.exports.getFeaturesFromData = getFeaturesFromData;
+module.exports.types = types;
 module.exports.labels = [...labels, `${classifier}?`];
-module.exports.training = training;
