@@ -1,6 +1,8 @@
 # Kato
 *Health warning*: this has no installation instructions and should probably **never** be run again
 
+![demo](https://media.giphy.com/media/3o7WIIj7Pgf6oot8dy/giphy.gif)
+
 Location recommendations based on anonymous user data.
 
 Built at HackJunction
